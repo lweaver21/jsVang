@@ -1,6 +1,13 @@
 # jsVang (v1)
 js Vanilla angular: Open-Source Modular web development with that vanilla js flavor
 
+#### Upcoming Changes
+
+- HTML/CSS string template support
+- Further attribute watching support
+- Routing support
+- Shared Service Support
+	
 *NO TYPESCRIPT REQUIRED!*
 
 
