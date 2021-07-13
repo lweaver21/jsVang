@@ -20,7 +20,7 @@ To install, simply download the _**'src'**_ folder and move the _**'L'**_ module
     * Each web component is located in it's own subdirectory of the *component* folder 
     * Each folder will contain an HTML, CSS, and JS file that defines your component
     
-2. Add the component files The file/dir sturcture of each component goes:
+2. Add the component files. The file/dir sturcture of each component goes:
     * *`/component/[name]/[name].component.html`*
     * *`/component/[name]/[name].component.css`*
     * *`/component/[name]/[name].component.js`*
