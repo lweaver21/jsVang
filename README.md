@@ -112,7 +112,7 @@ Inside the brackets you can evaluate any JS. However, *'this'* refers to *window
 #### onInitEnd()
 - Called after template has been rendered/attached
 - Safe to access DOM here
-
+- Set event handlers here
 
 
 ## Component HTML Element Callbacks
@@ -120,8 +120,8 @@ Built-In hooks fired by the element itself
 
 #### connectedCallback()
 - Called as soon as the element connects
-- Safe to access DOM here
-- Traditionally used for setting event handlers on/in the component
+- HTML template file not loaded in yet so DOM isn't safe (yet)
+- Will fix this issue to allow use of this callback which was traditionally for setting DOM events
 
 #### disconnectedCallback()
 - Called when element is removed from the DOM
@@ -167,9 +167,62 @@ You can access the DOM and Shadow DOM of your component with ease from inside th
     - You can edit the HTML of your component directly from Shadow Root
 
 The base util class, _**'L'**_ provides two static methods for querying DOM elements across the document that return an Lment or LmentArray:
-1. L.q(selector)
+1. `L.q(selector)`
     - The equivalent of `document.querySelector(selector);`
     -  Returns an `Lment` instance of the first element that matches the selector
-2. L.qa(selector)
+2. `L.qa(selector)`
     - The equivalent of `document.querySelectorAll(selector);`
     - Returns an `LmentArray` of all selected elements
+
+You can also query descendent elements of an Lment via instance methods of the same name.
+```javascript
+let element = L.q("div"),
+    input = element.q("input");
+```
+
+## DOM Events
+
+Creating and triggering events is fairly easy to accomplish in a component. Each component has a static *'events'* property whose value is an object. Each property in the object defines a custom event and it's default event options.
+
+```javascript
+//Somewhere in your component
+static events = {
+    customName: {
+    	//Default options if none specified
+        bubbles: true,
+	cancelable: true,
+	composed: false,
+	
+	//Can even add default data here
+	detail: { some: "data" },
+    }
+};
+```
+
+From inside the onInitEnd callback. You can query and access the component's DOM to attach event handlers and trigger events.
+
+```javascript
+onInitEnd() {
+	//Access the custom element as an Lment
+    let dom = this.getDom(),
+    	//Access component shadow root (component inner html found here)
+        shadow = this.shadow,
+	//Query a button inside the template
+	btn = shadow.q("#someBtn");
+    
+    //Set the button's click handler
+    btn.click(function() {
+    	//Create the custom event
+	//NOTE: 'composed' must be set to true for the event to bubble past the shadow root
+        let customEvent = TestComponent.event("customName", { composed: true, detail: "override default event options" });
+	//Dispatch event from the button
+	this.trigger(customEvent);
+    });
+    
+    //Attach event handler
+    //'composed' MUST be true for the event to bubble up to even here
+    dom.on("customEvent", function (e) {
+    	console.log(e.detail === "override default event options");
+    });
+}
+```
