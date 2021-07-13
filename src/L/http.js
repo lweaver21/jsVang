@@ -1,7 +1,7 @@
 import { L } from "./core.js";
 export { BaseHttp };
 
-const componentPath = "../../component/";
+const componentPath = "~/component/";
 
 class BaseHttp {
     static #fullPath(dest) {

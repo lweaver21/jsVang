@@ -530,44 +530,47 @@
 	    let result = this.raw.closest(selector);
 	    return result ? new Lment(result): null;
 	}
+	#prepHandler = function(fn, e) {
+	    return fn.call(this, e);
+	}
 	click(optionalFn) {
 	    if (optionalFn)
-		this.raw.addEventListener("click", optionalFn);
+		this.raw.addEventListener("click", (e) => this.#prepHandler(optionalFn, e));
 	    else
 		this.raw.click();
 	    return this;
 	}
 	blur(optionalFn) {
 	    if (optionalFn)
-		this.raw.addEventListener("blur", optionalFn);
+		this.raw.addEventListener("blur", (e) => this.#prepHandler(optionalFn, e));
 	    else
 		this.raw.blur();
 	    return this;
 	}
 	focus(optionalFn) {
 	    if (optionalFn)
-		this.raw.addEventListener("focus", optionalFn);
+		this.raw.addEventListener("focus", (e) => this.#prepHandler(optionalFn, e));
 	    else
 		this.raw.focus();
 	    return this;
 	}
 	scroll(optionalFn) {
 	    if (optionalFn)
-		this.raw.addEventListener("scroll", optionalFn);
+		this.raw.addEventListener("scroll", (e) => this.#prepHandler(optionalFn, e));
 	    else
 		this.raw.scroll();
 	    return this;
 	}
 	on(name, fn, optOrCapture = false) {
-	    this.raw.addEventListener(name, fn, optOrCapture);
+	    this.raw.addEventListener(name, (e) => this.#prepHandler(fn, e), optOrCapture);
 	    return this;
 	}
 	off(name, listener, capture = false) {
-	    this.raw.removeEventListener(name, listener, capture);
+	    this.raw.removeEventListener(name, (e) => this.#prepHandler(listener, e), capture);
 	    return this;
 	}
 	trigger(name, data = null) {
-	    if (BaseUtil.is.event(name)) {
+	    if (BaseUtil.is.event(name) || BaseUtil.is.customEvent(name)) {
 		this.raw.dispatchEvent(name);
 		return this;
 	    }
@@ -608,7 +611,7 @@
 	}
 
 	constructor(raw) {
-	    if (BaseUtil.is.raw(raw) || BaseUtil.is.fragment(raw)) {
+	    if (raw && (BaseUtil.is.raw(raw) || BaseUtil.is.fragment(raw))) {
 		this.raw = raw;
 		this.classes = new BaseClass(raw);
 		this.styles = new BaseStyle(raw);

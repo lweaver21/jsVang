@@ -41,21 +41,13 @@ class Component extends HTMLElement {
     static html = "";
     static styles = "";
     static events = {};
-    static event(name) {
-	const defaultOpt = {bubble: true, cancellable: true, composed: false};
+    static event(name, data) {
+	const defaultOpt = {bubbles: true, cancelable: true, composed: false};
 	let def = this.events[name];
-	if (def) {
-	    //Extend default options
-	    return L.curry(function (name, eventDef, options) { 
-			    return new CustomEvent(name, L.ext(defaultOpt, eventDef, options));
-		         })(name, def);
-	}
-	else {
-	    //Use only default options here
-	    return L.curry(function(name, options) {
-				return new CustomEvent(name, L.ext(defaultOpt, options));
-			  })(name);
-	}
+	if (def)
+	    return new CustomEvent(name, L.ext(defaultOpt, def, data));
+	else 
+	    return new CustomEvent(name, L.ext(defaultOpt, data));
     }
     
     #assemble(literal, params) {
@@ -109,12 +101,16 @@ class Component extends HTMLElement {
     set shadow(val) {
 	if (!this.#shadowBase) {
 	    if (L.is.shadow(val)) {
-		this.#shadowBase = val;
+		this.#shadowBase = new Lment(val);
+		this.#initEnd.call(this);
+	    }
+	    else if (L.is.lment(val) && L.is.shadow(val.raw)) {
+		this.#shadowBase = new Lment(val.raw);
 		this.#initEnd.call(this);
 	    }
 	}
 	else {
-	    this.#shadowBase = L.is.shadow(val) ? val : this.#shadowBase;
+	    this.#shadowBase = L.is.shadow(val) ? new Lment(val) : this.#shadowBase;
 	}
     }
     get shadow() {
