@@ -145,5 +145,31 @@ Built-In hooks fired by the element itself
 
 
 
-## DOM Events
+## DOM Selection/Manipulation
 
+The *core.js* module defines two classes that are meant to work similar to jQuery. You can even daisy chain many of these operations for cleaner code.
+1. Lment 
+    - JS wrapper class for selected HTML Element(s)
+    - Contains a number of instance methods for more easily working with DOM elements
+    - style, attributes, data properties, html, text, events, etc can be retrieved/set from here 
+2. LmentArray
+    - Essentially a wrapper class for a nodelist or array of elements
+    - Some instance methods that would modify the selected list as a whole
+    - Iterator methods to filter or perform operations on selected elements
+
+#### Component Level DOM Access
+
+You can access the DOM and Shadow DOM of your component with ease from inside the component class (after onInit).
+* this.getDom();
+    - Will return Lment instance of custom html element tied to component
+* this.shadow; || this.getDom().shadow();
+    - Two ways to access the Shadow Root as Lment
+    - You can edit the HTML of your component directly from Shadow Root
+
+The base util _**'L'**_ class provides two static methods for querying DOM elements accross the document that return an Lment or LmentArray:
+1. L.q(selector)
+    - The equivalent of `document.querySelector(selector);`
+    -  Returns an `Lment` instance of the first element that matches the selector
+2. L.qa(selector)
+    - The equivalent of `document.querySelectorAll(selector);`
+    - Returns an `LmentArray` of all selected elements
