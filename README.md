@@ -159,11 +159,11 @@ The *core.js* module defines two classes that are meant to work similar to jQuer
 
 #### Component Level DOM Access
 
-You can access the DOM and Shadow DOM of your component with ease from inside the component class (after onInit).
-* this.getDom();
+You can access the DOM and Shadow DOM of your component with ease from inside the component class (after `onInit`).
+* `this.getDom();`
     - Will return Lment instance of custom html element tied to component
-* this.shadow; || this.getDom().shadow();
-    - Two ways to access the Shadow Root as Lment
+* `this.shadow;` or `this.getDom().shadow();`
+    - Two ways to access the Shadow Root as _**Lment**_
     - You can edit the HTML of your component directly from Shadow Root
 
 The base util _**'L'**_ class provides two static methods for querying DOM elements accross the document that return an Lment or LmentArray:
