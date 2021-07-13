@@ -166,7 +166,7 @@ You can access the DOM and Shadow DOM of your component with ease from inside th
     - Two ways to access the Shadow Root as _**Lment**_
     - You can edit the HTML of your component directly from Shadow Root
 
-The base util _**'L'**_ class provides two static methods for querying DOM elements accross the document that return an Lment or LmentArray:
+The base util class, _**'L'**_ provides two static methods for querying DOM elements accross the document that return an Lment or LmentArray:
 1. L.q(selector)
     - The equivalent of `document.querySelector(selector);`
     -  Returns an `Lment` instance of the first element that matches the selector
