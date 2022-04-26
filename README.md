@@ -35,10 +35,10 @@ To install, simply download the _**'src'**_ folder and move the _**'L'**_ module
 **Defining a component** only requires 9 lines of code in it's _**.component.js**_ file:
 
 ``` javascript
-    import { Component } from '../../js/L/main.js';    // Absolute paths only (relative paths aren't allowed here unfortunately)
+    import { Component } from '../../js/L/main.js';    // Relative path - for node projects, move the 'L' folder into node_modules
     
     export class TestComponent extends Component {
-        static tag = "app-test";    //Tag Name for html MUST contain a dash <app-test></app-test>
+        static tag = "app-test";    //Tag name for html MUST contain a dash <app-test></app-test>
         static html = "test.component.html";    //Just the file names
         static style = "test.component.css";
         
